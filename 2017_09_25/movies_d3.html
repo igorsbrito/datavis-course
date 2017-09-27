@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	 <meta charset="utf-8">
+    <title>Carregando Filmes</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+
+<body>
+	
+
+	<div id="chart_bilheteria">
+		<div class="titulo">
+			Rank dos Filmes de Maior Bilhereria
+		</div>
+	</div>
+
+	<div id="chart_orcamento">
+		<div class="titulo">
+			Rank dos Filmes com Maiores Orçamentos
+		</div>
+	</div>
+
+	<div id="chart_lucro">
+		<div class="titulo">
+			Rank dos Filmes de Maiores Lucros
+		</div>
+	</div> 
+	
+    <script type="text/javascript">
+        function renderBilheteria(data, comparacao){
+
+        	d3.select("#chart_bilheteria").selectAll("div.h-bar")
+        		.data(data)
+        		.enter().append('div')
+        		.attr("class", "h-bar")
+                    .append('span');
+
+
+        	d3.select('#chart_bilheteria').selectAll('div.h-bar')
+        		.data(data)
+        		.style("width", function (d) {
+        			return d.Worldwide_Gross_M +'px';
+        		})
+        		.select('span').text(function (d){
+        			return d.Film +" Bilheteria: "+ d.Worldwide_Gross_M+" M";
+        		});
+
+        	if(comparacao)
+           		d3.select("#chart_bilheteria")
+                	.selectAll("div.h-bar") 
+                	.sort(comparacao);
+        }
+
+        function renderOrcamento(data, comparacao){
+
+        	d3.select("#chart_orcamento").selectAll("div.h-bar")
+        		.data(data)
+        		.enter().append('div')
+        		.attr("class", "h-bar")
+                    .append('span');
+
+
+        	d3.select('#chart_orcamento').selectAll('div.h-bar')
+        		.data(data)
+        		.style("width", function (d) {
+        			return d.Budget_M *2 +'px';
+        		})
+        		.select('span').text(function (d){
+        			return d.Film +" Orçamento: "+ d.Budget_M+" M";;
+        		});
+
+        	if(comparacao)
+                d3.select("#chart_orcamento")
+                    .selectAll("div.h-bar") 
+                    .sort(comparacao);
+        }
+
+
+        function renderLucro(data, comparacao){
+
+            d3.select("#chart_lucro").selectAll("div.h-bar")
+                .data(data)
+                .enter().append('div')
+                .attr("class", "h-bar")
+                    .append('span');
+
+
+            d3.select('#chart_lucro').selectAll('div.h-bar')
+                .data(data)
+                .style("width", function (d) {
+                    return (d.Worldwide_Gross_M - d.Budget_M)  +'px';
+                })
+                .select('span').text(function (d){
+                    return d.Film +"Lucro: "+ (d.Worldwide_Gross_M - d.Budget_M) + "M";
+                });
+
+            if(comparacao)
+                d3.select("#chart_lucro")
+                    .selectAll("div.h-bar") 
+                    .sort(comparacao);
+        }
+
+        var comparacaoBilheteria = function (a, b) { 
+        	return a.Worldwide_Gross_M > b.Worldwide_Gross_M?-1:1;
+    	};
+
+    	var comparacaoOrcamento = function (a, b) { 
+        	return a.Budget_M > b.Budget_M?-1:1;
+    	};
+
+        var comparacaoLucro = function (a, b) { 
+            var lucroA = (a.Worldwide_Gross_M - a.Budget_M);
+            var lucroB = (b.Worldwide_Gross_M - b.Budget_M);
+
+            return lucroA <lucroB?-1:1;
+        };
+    	
+
+        d3.json('movies.json', function(data){
+        	renderBilheteria(data, comparacaoBilheteria);
+        	renderOrcamento(data, comparacaoOrcamento)
+            renderLucro(data, comparacaoLucro)
+
+        })
+    </script>
+
+
+
+</body>
+
+</html>
+
