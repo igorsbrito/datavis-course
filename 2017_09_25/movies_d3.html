@@ -44,6 +44,9 @@
         		.style("width", function (d) {
         			return d.Worldwide_Gross_M +'px';
         		})
+			.style("background-color", function (d) {
+        			return "#ff7f50";
+        		})
         		.select('span').text(function (d){
         			return d.Film +" Bilheteria: "+ d.Worldwide_Gross_M+" M";
         		});
@@ -67,6 +70,9 @@
         		.data(data)
         		.style("width", function (d) {
         			return d.Budget_M *2 +'px';
+        		})
+			.style("background-color", function (d) {
+        			return "#6495ed";
         		})
         		.select('span').text(function (d){
         			return d.Film +" Orçamento: "+ d.Budget_M+" M";;
@@ -93,6 +99,9 @@
                 .style("width", function (d) {
                     return (d.Worldwide_Gross_M - d.Budget_M)  +'px';
                 })
+		.style("background-color", function (d) {
+        			return "#a7addb";
+        		})
                 .select('span').text(function (d){
                     return d.Film +"Lucro: "+ (d.Worldwide_Gross_M - d.Budget_M) + "M";
                 });
