@@ -2,4 +2,12 @@ body {
     font-family: "helvetica"
 }
 
+#painel{
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 10px;
+}
 
+#chart{
+	margin-left: 100px;
+}
