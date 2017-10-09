@@ -11,8 +11,16 @@
 
 </head>
 <body>
-     <div><h1> Valores percentuais das ações da Apple e do Facebook em relação ao valor do primeiro dia</h1>
-        <div id="chart"></div>
+    <div id="painel" align="center" class="panel panel-default">
+        <div class="panel-heading">
+            <h1> Valores percentuais das ações da Apple e do Facebook em relação ao valor do primeiro dia</h1>
+        </div>
+        <div class="panel-body">
+            <div id="chart"></div>
+        </div>
+    </div>
+     <div>
+        
     </div>
 	<script type="text/javascript">
         var compositeChart = dc.compositeChart('#chart');
@@ -80,6 +88,7 @@
             dc.renderAll();
 
 		});
-	</script>			
+	</script>	
+	
 </body>
 </html>
