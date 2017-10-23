@@ -27,25 +27,31 @@
                 
             </div>
             <script type="text/javascript">
-                var map = L.map('mapid').setView([41.8987799,-87.7065705], 5);
+                var map = L.map('mapid').setView([41.8987799,-87.7065705], 10);
 
                L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a>contributors',
                 maxZoom: 17  
               }).addTo(map);
 
+               var colorScale = d3.scale.ordinal()
+                .domain(["HOMICIDE","ROBBERY","BURGLARY"])
+                .range(["#ca0020", "#0571b0", "fdae61"]);
 
                var dtgFormat = d3.time.format.utc("%Y-%m-%dT%H:%M:%S");
                d3.csv("Crimes_Chicago_Sep2017.csv", function (data) {
 
+
+                  data.forEach(function(d){};
                    d.dtg = dtgFormat.parse(d.Date.substr(0,19));
                    d.lat = d.Latitude;
-                   d.long =Longitude;
+                   d.lon = d.Longitude;
+                   d.crimeType = d['Primary Type'];
 
-                  var circle = L.circle([d.lat, d.long], 10000, {
-                    color: '#fd8d3c',
+                  var circle = L.circle([d.lat, d.lon], 10000, {
+                    color: colorScale(d.crimeType),
                     weight: 2,
-                    fillColor: '#fecc5c',
+                    fillColor: colorScale(d.crimeType),
                     fillOpacity: 0.5
                   }).addTo(map);
 
@@ -53,9 +59,7 @@
                });
 
 
-              /* var coorScale = d3.scale.ordinal()
-                .domain(["HOMICIDE","ROBBERY","BURGLARY"])
-                .range(["#ca0020", "#0571b0", "fdae61"]);
+              /* 
 
               d3.csv("Crimes_Chicago_Śep2017.csv", functin(data){
                 var dtgFormat = d3.time.format.utc("%Y-%m-%dT%H:%M:%S");
