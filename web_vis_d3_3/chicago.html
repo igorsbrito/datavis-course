@@ -23,49 +23,21 @@
         </head>
         <body>
             <div class='container-fluid'>
-                <div id="mapid"></div>
+               <h1>Mapa de crimes em Chicago</h1>
+                <div id="mapid">
                 
+                </div>
+                <br>
+                <div id="typeCrime-Chart">
+                  <h1>Total de Cada tipo de crime</h1>
+                </div>
+                <br>
+                <div id="crimeHour-line">
+                  <h1>Crimes por Dia</h1>
+                </div>
+
             </div>
-            <script type="text/javascript">
-                var map = L.map('mapid').setView([41.8987799,-87.7065705], 10);
-
-               L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a>contributors',
-                maxZoom: 17  
-              }).addTo(map);
-
-               var colorScale = d3.scale.ordinal()
-                .domain(["HOMICIDE","ROBBERY","BURGLARY"])
-                .range(["#ca0020", "#0571b0", "fdae61"]);
-
-               var dtgFormat = d3.time.format.utc("%Y-%m-%dT%H:%M:%S");
-               d3.csv("Crimes_Chicago_Sep2017.csv", function (data) {
-
-
-                  data.forEach(function(d){};
-                   d.dtg = dtgFormat.parse(d.Date.substr(0,19));
-                   d.lat = d.Latitude;
-                   d.lon = d.Longitude;
-                   d.crimeType = d['Primary Type'];
-
-                  var circle = L.circle([d.lat, d.lon], 10000, {
-                    color: colorScale(d.crimeType),
-                    weight: 2,
-                    fillColor: colorScale(d.crimeType),
-                    fillOpacity: 0.5
-                  }).addTo(map);
-
-
-               });
-
-
-              /* 
-
-              d3.csv("Crimes_Chicago_Śep2017.csv", functin(data){
-                var dtgFormat = d3.time.format.utc("%Y-%m-%dT%H:%M:%S");
-              })  */
-              //row chart
-            </script>
+            <script src= "js/Chicago.js" type="text/javascript"></script>
 
             <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

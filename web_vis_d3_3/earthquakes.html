@@ -91,6 +91,8 @@
                 d.mag = d3.round(+d.magnitude, 1);
                 d.depth = d3.round(+d.depth, 0);
 
+
+                console.log(d.origintime);
                 var circle = L.circle([d.lat, d.lon], 1000*d.mag, {
                   color: '#fd8d3c',
                   weight: 2,
