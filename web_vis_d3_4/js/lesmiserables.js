@@ -1,6 +1,8 @@
 function Network() {
+
+
   var allData = [],
-  width = 960,
+  width = 1000,
   height = 800,
   // our force directed layout
   force = d3.layout.force(), 
@@ -27,25 +29,52 @@ function Network() {
     return nodesMap;
   }
 
+
+  
+
   function setupData(data) {
 
-    var circleRadius, countExtent;
+    var circleRadius, countExtent, countConnections, arrayCountConnections;
     // initialize circle radius scale
+    arrayCountConnections = [];
+
+    
     countExtent = d3.extent(data.nodes, function(d) {
-      return d.playcount;
+      return d.group;
       });
-    circleRadius = d3.scale.sqrt().range([3, 15]).domain(countExtent);
+    console.log(countExtent);
+
+    countConnections = d3.extent(data.nodes, function(n){
+      var count = 0;
+      var name = n.id;
+
+      data.links.forEach(function(l){
+        if(l.source == name || l.target == name) count = count + 1;
+      });
+      return count;
+
+    });
+
+    console.log(countConnections);
+    console.log(data.nodes);
+    circleRadius = d3.scale.sqrt().range([1, 15]).domain(countConnections);
 
     //First let's randomly dispose data.nodes (x/y) within the the width/height
     // of the visualization and set a fixed radius for now
     data.nodes.forEach(function(n) {
       var randomnumber;
+      var count = 0;
+      data.links.forEach(function(l){
+            if(l.source == n.id || l.target == n.id) count = count + 1;
+      });
+      n.connections =  count;
       // set initial x/y to values within the width/height
       // of the visualization
       n.x = randomnumber = Math.floor(Math.random() * width);
       n.y = randomnumber = Math.floor(Math.random() * height);
+
       // add radius to the node so we can use it later
-      n.radius = circleRadius(n.playcount);
+      n.radius = circleRadius(3*n.connections);
     });
 
     // Then we will create a map with
@@ -66,9 +95,9 @@ function Network() {
   // Mouseover tooltip function
   function showDetails(d, i) {
       var content;
-    content = '<p class="main">' + d.name + '</span></p>';
+    content = '<p class="main"> Name: ' + d.id + '</span></p>';
     content += '<hr class="tooltip-hr">';
-    content += '<p class="main">' + d.artist + '</span></p>';
+    content += '<p class="main"> Grup: ' + d.group + '</span></p>';
     tooltip.showTooltip(content, d3.event);
 
     // highlight the node being moused over
@@ -105,7 +134,9 @@ function Network() {
         return d.y;})
       .attr("r", function(d) {
         return d.radius;})
+      .attr('color','#1f12aa')
       .style("stroke-width", 1.0)
+      .attr("style", "fill: #6447bc" )
       .on("mouseover", showDetails).on("mouseout", hideDetails);
 
   }
@@ -173,7 +204,7 @@ function Network() {
     updateLinks();
     
     // set the tick callback, charge and linkDistance
-    force.on("tick", forceTick).charge(-100).linkDistance(100);
+    force.on("tick", forceTick).charge(-250).linkDistance(160);
     
     // perform rendering and start force layout
     return force.start();
