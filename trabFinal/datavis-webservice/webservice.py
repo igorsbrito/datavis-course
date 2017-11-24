@@ -17,15 +17,10 @@ parser = reqparse.RequestParser()
 #Collections:
 #dishes, menus e itens_menu
 
-class Teste(Resource):
-	
-	@staticmethod
-	def get():
-		print 'Teste'
-		return {'Teste':'Teste'}
-
 class Location(Resource):
 
+	# For now return just the restaurants, 
+	# Waiting for the database modifications so it can return the restaurant identification with coordenates
 	@staticmethod
 	def get():
 
@@ -45,6 +40,7 @@ class Location(Resource):
 
 class ItensRestaurant(Resource):
 
+	#return itens of one restaurante - recive as parameter the restaurant id
 	@staticmethod
 	def get(id_place):
 
@@ -62,8 +58,11 @@ class ItensRestaurant(Resource):
 
 		return itens
 
-api.add_resource(Teste,'/teste/', endpoint='teste')
+# For now return just the restaurants, 
+# Waiting for the database modifications so it can return the restaurant identification with coordenates
 api.add_resource(Location, '/locations/', endpoint='get_locations')
+
+#return itens of one restaurante - recive as parameter the restaurant id
 api.add_resource(ItensRestaurant, '/restaurant/itens/<string:id_place>/', endpoint='dishes')
 
 app.run(host='0.0.0.0', port=8000, debug=True)
